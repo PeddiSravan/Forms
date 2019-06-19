@@ -10,6 +10,25 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="nu7-t9-OLc">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Rkd-KZ-1sG" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jdk-RU-k4m">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.27194248652358066" blue="0.061017310441379924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="tRm-pH-rRY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ffa-Ln-2pT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52" y="750.67466266866575"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -39,31 +58,12 @@
                     <navigationItem key="navigationItem" id="6sh-Q2-RB4"/>
                     <connections>
                         <outlet property="tableView" destination="8P5-54-Rb2" id="iap-wm-SWa"/>
-                        <segue destination="ZXG-gt-OF0" kind="show" id="SpX-pO-Jku"/>
+                        <segue destination="ZXG-gt-OF0" kind="show" identifier="DetailView" id="SpX-pO-Jku"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1001" y="98"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="nu7-t9-OLc">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Rkd-KZ-1sG" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jdk-RU-k4m">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="1" green="0.27194248652358066" blue="0.061017310441379924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="tRm-pH-rRY"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ffa-Ln-2pT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="52" y="750.67466266866575"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="hij-FM-4rj">

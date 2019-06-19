@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,DateDelegate {
 
     var mainDict: [String : AnyObject]?
     var sectionsArray: [AnyObject] = [AnyObject]()
@@ -55,7 +55,27 @@ class ViewController: UIViewController {
             print(error.localizedDescription)
         }
     }
-
+    @objc func dropDownClicked(sender: CustomButton) {
+        //        if expandedSections.contains(tag ?? 0){
+        //            expandedSections.remove(object: tag ?? 0)
+        //        }else{
+        //            expandedSections.append(tag ?? 0)
+        //        }
+        //        self.tableView.reloadData()
+    }
+    
+    @objc func dateClicked(sender: CustomButton) {
+        
+        print("dateClicked\(String(describing: sender.code))")
+        let dateSeletcionViewController = DateSelectionViewController()
+        dateSeletcionViewController.code = sender.code
+        dateSeletcionViewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        dateSeletcionViewController.dateDelegate = self
+        self.navigationController?.present(dateSeletcionViewController, animated: true, completion: nil)
+    }
+    func displaySelectedDate(dateStr: String?, key: String?) {
+     print("Date \(dateStr)For Key\(key)")
+    }
 
 }
 
@@ -133,6 +153,23 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
         cell.titleLabel.text = childElement["name"] as? String
+        let code = childElement["code"] as? String
+        if (cell.textField != nil) {
+            cell.textField.code = code
+        }
+        if (cell.textArea != nil) {
+            cell.textArea.code = code
+        }
+        if (cell.dateButton != nil)
+        {
+            cell.dateButton.code = code
+            cell.dateButton.addTarget(self, action: #selector(dateClicked) , for: UIControl.Event.touchUpInside);
+        }
+        if (cell.dropDownButton != nil)
+        {
+            cell.dropDownButton.code = code
+            cell.dropDownButton.addTarget(self, action: #selector(dropDownClicked) , for: UIControl.Event.touchUpInside);
+        }
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
@@ -148,7 +185,6 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
             detailViewController.detailDict = childElement as? [String : AnyObject]
             self.navigationController?.pushViewController(detailViewController, animated: true)//present(detailViewController, animated:true, completion:nil)
         }
-
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let innerDict = sectionsArray[section]

@@ -10,9 +10,10 @@ import UIKit
 class FormCell: UITableViewCell {
 
     @IBOutlet var titleLabel : UILabel!
-    @IBOutlet var textField : UITextField!
-    @IBOutlet var textArea : UITextView!
-    @IBOutlet var dateButton : UIButton!
+    @IBOutlet var textField : CustomTextView!
+    @IBOutlet var textArea : CustomTextView!
+    @IBOutlet var dateButton : CustomButton!
+    @IBOutlet var dropDownButton : CustomButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
