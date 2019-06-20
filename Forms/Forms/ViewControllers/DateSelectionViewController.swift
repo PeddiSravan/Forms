@@ -8,7 +8,6 @@
 import UIKit
 
 protocol DateDelegate: class {
-//    func displaySelectedDate(date: NSDate?,key: String?)
     func displaySelectedDate(dateStr: String?,key: String?)
 
 }

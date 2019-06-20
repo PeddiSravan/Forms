@@ -36,7 +36,7 @@
                             },
                             {
                                 "name": "D.O.B",
-                                "code": "lastName",
+                                "code": "dateOfBirth",
                                 "type": "DateTime",
                                 "format": "dd-mmm-yyyy hh:mm:ss.s",
                                 "value": [
@@ -55,7 +55,7 @@
                                 "name": "Gender",
                                 "code": "sex",
                                 "type": "SingleSelect",
-                                "Options": [
+                                "options": [
                                     "Male",
                                     "Female"
                                 ],

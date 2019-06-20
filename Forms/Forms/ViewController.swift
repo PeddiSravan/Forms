@@ -7,7 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController,DateDelegate {
+var codeValues: [String:String] = [String:String]()
+
+class ViewController: UIViewController,DateDelegate,DropDownDelegate {
 
     var mainDict: [String : AnyObject]?
     var sectionsArray: [AnyObject] = [AnyObject]()
@@ -56,12 +58,18 @@ class ViewController: UIViewController,DateDelegate {
         }
     }
     @objc func dropDownClicked(sender: CustomButton) {
-        //        if expandedSections.contains(tag ?? 0){
-        //            expandedSections.remove(object: tag ?? 0)
-        //        }else{
-        //            expandedSections.append(tag ?? 0)
-        //        }
-        //        self.tableView.reloadData()
+        print("dropDownClicked\(String(describing: sender.code))")
+        
+        let options = sender.childElement?["options"]
+        let type = sender.childElement?["type"]
+
+        let dropDownSelectionViewController = DropDownSelectionViewController()
+        dropDownSelectionViewController.code = sender.code
+        dropDownSelectionViewController.dropDownDelegate = self
+        dropDownSelectionViewController.dropDownValues = options as! [String]
+        dropDownSelectionViewController.dropDownType = type as! String
+        dropDownSelectionViewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.navigationController?.present(dropDownSelectionViewController, animated: true, completion: nil)
     }
     
     @objc func dateClicked(sender: CustomButton) {
@@ -74,9 +82,14 @@ class ViewController: UIViewController,DateDelegate {
         self.navigationController?.present(dateSeletcionViewController, animated: true, completion: nil)
     }
     func displaySelectedDate(dateStr: String?, key: String?) {
-     print("Date \(dateStr)For Key\(key)")
+        print("Date \(String(describing: dateStr))For Key\(String(describing: key))")
+        codeValues[key ?? ""] = dateStr
+        self.tableView.reloadData()
     }
-
+    func displaySelectedDropDownValue(dropDownValue: String?, key: String?) {
+        codeValues[key ?? ""] = dropDownValue
+        self.tableView.reloadData()
+    }
 }
 
 extension ViewController : UITableViewDelegate,UITableViewDataSource
@@ -153,21 +166,34 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
         cell.titleLabel.text = childElement["name"] as? String
-        let code = childElement["code"] as? String
+        let code = childElement["code"] as! String
+        var aValue =  codeValues[code]
+        if aValue == nil {
+            aValue = ""
+        }
+
         if (cell.textField != nil) {
             cell.textField.code = code
+            cell.textField.childElement = childElement
+            cell.textField.text = aValue
+            cell.textField.delegate = self
         }
         if (cell.textArea != nil) {
             cell.textArea.code = code
+            cell.textArea.childElement = childElement
+            cell.textArea.text = aValue
+            cell.textArea.delegate = self
         }
         if (cell.dateButton != nil)
         {
             cell.dateButton.code = code
+            cell.dateButton.childElement = childElement
             cell.dateButton.addTarget(self, action: #selector(dateClicked) , for: UIControl.Event.touchUpInside);
         }
         if (cell.dropDownButton != nil)
         {
             cell.dropDownButton.code = code
+            cell.dropDownButton.childElement = childElement
             cell.dropDownButton.addTarget(self, action: #selector(dropDownClicked) , for: UIControl.Event.touchUpInside);
         }
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -183,6 +209,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let detailViewController = storyBoard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
             detailViewController.detailDict = childElement as? [String : AnyObject]
+//            detailViewController.codeValues = self.codeValues
             self.navigationController?.pushViewController(detailViewController, animated: true)//present(detailViewController, animated:true, completion:nil)
         }
     }
@@ -244,6 +271,22 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         self.tableView.reloadData()
     }
 
+}
+
+extension ViewController: UITextFieldDelegate, UITextViewDelegate
+{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text.elementsEqual("\n")
+        {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }
 extension Array where Element: Equatable {
     
