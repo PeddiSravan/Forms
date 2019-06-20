@@ -25,9 +25,9 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
         let titleView = UIView(frame: rect)
         titleLabel.frame = rect;
         titleLabel.text = ""
-        titleLabel.font = UIFont.systemFont(ofSize: 14)
+        titleLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.semibold)
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = NSTextAlignment.center
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
@@ -87,13 +87,13 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         let childElement = childArray[indexPath.row]
         let childElementType = childElement["type"] as! String
         var cellHeight = 65
-        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox")  {
+        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
             cellHeight = 44
         }
         if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
             cellHeight = 65
         }
-        if childElementType.elementsEqual("TextArea") || childElementType.elementsEqual("PlainText") {
+        if childElementType.elementsEqual("TextArea")  {
             cellHeight = 120
         }
         return CGFloat(cellHeight)
@@ -111,7 +111,7 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         if childElementType.elementsEqual("TextBox") {
             indexToDisplay = 1
         }
-        if childElementType.elementsEqual("TextArea") || childElementType.elementsEqual("PlainText") {
+        if childElementType.elementsEqual("TextArea") {
             indexToDisplay = 2
         }
         if childElementType.elementsEqual("DateTime") {
@@ -122,6 +122,9 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         }
         if childElementType.elementsEqual("CheckBox") {
             indexToDisplay = 5
+        }
+        if childElementType.elementsEqual("PlainText") {
+            indexToDisplay = 6
         }
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
@@ -155,7 +158,7 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
             cell.dropDownButton.childElement = childElement
             cell.dropDownButton.addTarget(self, action: #selector(dropDownClicked) , for: UIControl.Event.touchUpInside);
         }
-
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

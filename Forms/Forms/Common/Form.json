@@ -1119,7 +1119,7 @@
                             {
                                 "name": "",
                                 "code": "medicationreviewpatient_date",
-                                "type": "date",
+                                "type": "DateTime",
                                 "value": [
                                     
                                 ]

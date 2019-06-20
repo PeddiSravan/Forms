@@ -29,9 +29,9 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
         let titleView = UIView(frame: rect)
         titleLabel.frame = rect;
         titleLabel.text = ""
-        titleLabel.font = UIFont.systemFont(ofSize: 14)
+        titleLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.semibold)
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = NSTextAlignment.center
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
@@ -125,13 +125,13 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let childElement = childArray[indexPath.row]
         let childElementType = childElement["type"] as! String
         var cellHeight = 65
-        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") {
+        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
             cellHeight = 44
         }
         if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
             cellHeight = 65
         }
-        if childElementType.elementsEqual("TextArea") || childElementType.elementsEqual("PlainText") {
+        if childElementType.elementsEqual("TextArea") {
             cellHeight = 120
         }
         return CGFloat(cellHeight)
@@ -150,7 +150,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         if childElementType.elementsEqual("TextBox") {
             indexToDisplay = 1
         }
-        if childElementType.elementsEqual("TextArea") || childElementType.elementsEqual("PlainText") {
+        if childElementType.elementsEqual("TextArea") {
             indexToDisplay = 2
         }
         if childElementType.elementsEqual("DateTime") {
@@ -161,6 +161,9 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         }
         if childElementType.elementsEqual("CheckBox") {
             indexToDisplay = 5
+        }
+        if childElementType.elementsEqual("PlainText") {
+            indexToDisplay = 6
         }
 
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
@@ -217,8 +220,8 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let innerDict = sectionsArray[section]
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44)
         let footerView = UIView(frame:rect)
-        footerView.backgroundColor = UIColor.init(red: 30/255.0, green: 134/255.0, blue: 210/255.0, alpha: 1.0)
-//        30 134 210
+        footerView.backgroundColor = UIColor.init(red: 254/255.0, green: 198/255.0, blue: 70/255.0, alpha: 1.0)
+//        30 134 210 254 198 70
         let labelRect = CGRect(x: 5, y: 0, width: rect.size.width-40, height: 44)
 
         let labelToDisplay = UILabel(frame: labelRect)
@@ -244,7 +247,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
                 expandButton.setTitle("+", for: UIControl.State.normal)
             }
         }
-        expandButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        expandButton.setTitleColor(UIColor.blue, for: UIControl.State.normal)
         footerView.addSubview(expandButton)
 
         

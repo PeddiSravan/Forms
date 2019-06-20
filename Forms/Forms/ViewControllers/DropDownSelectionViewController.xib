@@ -37,7 +37,7 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MWN-km-UUu">
                                     <rect key="frame" x="0.0" y="0.0" width="167" height="44"/>
-                                    <color key="backgroundColor" red="0.99607843139999996" green="0.77647058820000003" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.99607843139999996" green="0.77647058820000003" blue="0.27450980390000002" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Cancel"/>
                                     <connections>

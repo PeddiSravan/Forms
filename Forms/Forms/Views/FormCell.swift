@@ -20,11 +20,11 @@ class FormCell: UITableViewCell {
         // Initialization code
         if (textField != nil){
             textField?.layer.borderWidth = 1.0;
-            textField?.layer.borderColor = UIColor.gray.cgColor
+            textField?.layer.borderColor = UIColor.lightGray.cgColor
         }
         if (textArea != nil){
             textArea?.layer.borderWidth = 1.0;
-            textArea?.layer.borderColor = UIColor.gray.cgColor
+            textArea?.layer.borderColor = UIColor.lightGray.cgColor
         }
     }
 
