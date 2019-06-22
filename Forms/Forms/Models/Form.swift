@@ -7,22 +7,22 @@
 
 import Foundation
 
-struct Form {
-    var name = CommonStrings.emptyString
-    var sections = [Section]()
-    
+class FormsMainModel:Codable {
+    var form:FormsModel!
 }
-struct Section
-{
+
+class FormsModel:Codable {
+    var name:String = CommonStrings.emptyString
+    var sections:[SectionModel] = []
+}
+
+class SectionModel:Codable {
     var name = CommonStrings.emptyString
     var code = CommonStrings.emptyString
     var type = CommonStrings.emptyString
-    var value = [String]()
-    var childList = [Section]()
-    
-//    name    "Residents Information"
-//    code    "section_1"
-//    type    "section"
-//    value    []
-//    childList
+    var value:[String] = []
+    var options:[String]?
+    var childList:[SectionModel]?
 }
+
+

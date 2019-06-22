@@ -10,8 +10,8 @@ import UIKit
 class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
     @IBOutlet var tableView:UITableView!
     var titleLabel: UILabel = UILabel()
-    var detailDict: [String : AnyObject]?
-//    var codeValues: [String:String]?
+    var detailDict: SectionModel!
+    var selectedElement:SectionModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,19 +31,19 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
         titleLabel.textAlignment = NSTextAlignment.center
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
-        titleLabel.text = detailDict?["name"] as? String
+        titleLabel.text = detailDict.name
     }
     @objc func dropDownClicked(sender: CustomButton) {
         print("dropDownClicked\(String(describing: sender.code))")
         
-        let options = sender.childElement?["options"]
-        let type = sender.childElement?["type"]
-        
+        let options = sender.childElement?.options
+        let type = sender.childElement?.type
+        selectedElement = sender.childElement
         let dropDownSelectionViewController = DropDownSelectionViewController()
         dropDownSelectionViewController.code = sender.code
         dropDownSelectionViewController.dropDownDelegate = self
-        dropDownSelectionViewController.dropDownValues = options as! [String]
-        dropDownSelectionViewController.dropDownType = type as! String
+        dropDownSelectionViewController.dropDownValues = options ?? []
+        dropDownSelectionViewController.dropDownType = type ?? ""
         dropDownSelectionViewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.navigationController?.present(dropDownSelectionViewController, animated: true, completion: nil)
     }
@@ -51,6 +51,7 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
     @objc func dateClicked(sender: CustomButton) {
         
         print("dateClicked\(String(describing: sender.code))")
+        selectedElement = sender.childElement
         let dateSeletcionViewController = DateSelectionViewController()
         dateSeletcionViewController.code = sender.code
         dateSeletcionViewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -58,12 +59,13 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
         self.navigationController?.present(dateSeletcionViewController, animated: true, completion: nil)
     }
     func displaySelectedDate(dateStr: String?, key: String?) {
-        print("Date \(String(describing: dateStr))For Key\(String(describing: key))")
-        codeValues[key ?? ""] = dateStr
+        selectedElement.value.removeAll()
+        selectedElement.value.append(dateStr!)
         self.tableView.reloadData()
     }
     func displaySelectedDropDownValue(dropDownValue: String?, key: String?) {
-        codeValues[key ?? ""] = dropDownValue
+        selectedElement.value.removeAll()
+        selectedElement.value.append(dropDownValue!)
         self.tableView.reloadData()
     }
 }
@@ -76,16 +78,11 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let childArray =  detailDict?["childList"] as! [AnyObject]
-        return childArray.count
+        return detailDict.childList?.count ?? 0
     }
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 44
-//    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let childArray =  detailDict?["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
-        let childElementType = childElement["type"] as! String
+        let childElement =  detailDict.childList![indexPath.row]
+        let childElementType = childElement.type
         var cellHeight = 65
         if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
             cellHeight = 44
@@ -100,10 +97,9 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let childArray =  detailDict?["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
+        let childElement = detailDict.childList![indexPath.row]
+        let childElementType = childElement.type
         
-        let childElementType = childElement["type"] as! String
         var indexToDisplay = 0
         if childElementType.elementsEqual("group") {
             indexToDisplay = 0
@@ -128,11 +124,11 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         }
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
-        cell.titleLabel.text = childElement["name"] as? String
-        let code = childElement["code"] as! String
-        var aValue =  codeValues[code]
-        if aValue == nil {
-            aValue = ""
+        cell.titleLabel.text = childElement.name
+        let code = childElement.code
+        var aValue = ""
+        if childElement.value.count > 0  {
+            aValue = childElement.value[0]
         }
         if (cell.textField != nil) {
             cell.textField.code = code
@@ -163,14 +159,13 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let childArray =  detailDict?["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
-        let childElementType = childElement["type"] as! String
+        let childElement = self.detailDict.childList![indexPath.row]
+        let childElementType = childElement.type
         if childElementType.elementsEqual("group") {
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let detailViewController = storyBoard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-            detailViewController.detailDict = childElement as? [String : AnyObject]
-            self.navigationController?.pushViewController(detailViewController, animated: true)//present(detailViewController, animated:true, completion:nil)
+            detailViewController.detailDict = childElement
+            self.navigationController?.pushViewController(detailViewController, animated: true)
         }
     }
 }
@@ -185,6 +180,32 @@ extension DetailViewController: UITextFieldDelegate, UITextViewDelegate
         {
             textView.resignFirstResponder()
             return false
+        }
+        if let customeTextField = textView as? CustomTextView {
+            let selectedModel = customeTextField.childElement
+            var finalTxt:String = textView.text!
+            if range.length == 0 {
+                finalTxt = finalTxt + text
+            }else{
+                finalTxt = String(finalTxt.dropLast())
+            }
+            selectedModel?.value.removeAll()
+            selectedModel?.value.append(finalTxt)
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let customeTextField = textField as? CustomTextField {
+            let selectedModel = customeTextField.childElement
+            var finalTxt = textField.text!
+            if range.length == 0 {
+                finalTxt = finalTxt + string
+            }else{
+                finalTxt = String(finalTxt.dropLast())
+            }
+            selectedModel?.value.removeAll()
+            selectedModel?.value.append(finalTxt)
         }
         return true
     }

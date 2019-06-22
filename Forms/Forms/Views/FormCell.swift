@@ -10,7 +10,7 @@ import UIKit
 class FormCell: UITableViewCell {
 
     @IBOutlet var titleLabel : UILabel!
-    @IBOutlet var textField : CustomTextView!
+    @IBOutlet var textField : CustomTextField!
     @IBOutlet var textArea : CustomTextView!
     @IBOutlet var dateButton : CustomButton!
     @IBOutlet var dropDownButton : CustomButton!
@@ -21,6 +21,9 @@ class FormCell: UITableViewCell {
         if (textField != nil){
             textField?.layer.borderWidth = 1.0;
             textField?.layer.borderColor = UIColor.lightGray.cgColor
+            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: textField.frame.size.height))
+            textField?.leftView = paddingView
+            textField?.leftViewMode = .always
         }
         if (textArea != nil){
             textArea?.layer.borderWidth = 1.0;

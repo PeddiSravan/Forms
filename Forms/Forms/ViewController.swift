@@ -7,7 +7,7 @@
 
 import UIKit
 
-var codeValues: [String:String] = [String:String]()
+//var codeValues: [String:String] = [String:String]()
 
 class ViewController: UIViewController,DateDelegate,DropDownDelegate {
 
@@ -16,6 +16,10 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
     @IBOutlet var tableView:UITableView!
     var expandedSections: [Int] = [Int]()
     var titleLabel: UILabel = UILabel()
+    
+    var selectedElement:SectionModel!
+    
+    var formsModel:FormsModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,45 +39,77 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
         titleLabel.textAlignment = NSTextAlignment.center
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
-        
-        self.fetchJsonDataFromFile()
-
+        self.retrieveDataFromUserDefaults()
+        self.addSaveBtnInNav()
     }
-    private func fetchJsonDataFromFile() {
-        //Check jsonObject is valid or not
-        guard let url = Bundle.main.url(forResource: "Form", withExtension: "json") else { return }
+    
+    func addSaveBtnInNav() {
+        let saveButton = UIButton.init(type: .custom)
+        saveButton.setTitle("SAVE", for: .normal)
+        saveButton.setTitleColor(UIColor.blue, for: .normal)
+        saveButton.addTarget(self, action: #selector(saveDataToUserDefaults), for: .touchUpInside)
+        saveButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        let saveBarButtonItem = UIBarButtonItem.init(customView: saveButton)
+        self.navigationItem.rightBarButtonItem = saveBarButtonItem
+    }
+    
+    @objc func saveDataToUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        let httpBody = try? JSONEncoder().encode(formsModel)
+        userDefaults.set(httpBody, forKey: "Forms")
+        userDefaults.synchronize()
+        self.view.showToast("Deatails Saved Successfully!", width: 200)
+    }
+    func retrieveDataFromUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        let decoded  = userDefaults.data(forKey: "Forms")
         do {
-            let data = try Data(contentsOf: url)
-            let object = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-            print(object)
-            if let dictionary = object as? [String: AnyObject] {
-                print("Dictionary \(dictionary)");
-                mainDict = dictionary["form"] as? [String : AnyObject]
-                let formName = mainDict?["name"] as? String
-                titleLabel.text = formName
-                sectionsArray = mainDict?["sections"] as! [AnyObject]
+            if decoded != nil {
+                self.formsModel = try JSONDecoder().decode(FormsModel.self, from: decoded!)
+                titleLabel.text = self.formsModel.name
+                self.tableView.reloadData()
+            }else{
+                self.fetchJsonDataFromFile()
             }
-        }catch {
-            print(error.localizedDescription)
+        }
+        catch{
+            self.fetchJsonDataFromFile()
+        }
+    }
+    
+    private func fetchJsonDataFromFile() {
+        if self.formsModel == nil {
+            //Check jsonObject is valid or not
+            guard let url = Bundle.main.url(forResource: "Form", withExtension: "json") else { return }
+            do {
+                let data = try Data(contentsOf: url)
+                let model: FormsMainModel = try JSONDecoder().decode(FormsMainModel.self, from: data)
+                self.formsModel = model.form
+                titleLabel.text = self.formsModel.name
+                self.tableView.reloadData()
+            }catch {
+                print(error.localizedDescription)
+            }
         }
     }
     @objc func dropDownClicked(sender: CustomButton) {
         print("dropDownClicked\(String(describing: sender.code))")
         
-        let options = sender.childElement?["options"]
-        let type = sender.childElement?["type"]
+        let options = sender.childElement?.options
+        let type = sender.childElement?.type
+        selectedElement = sender.childElement
 
         let dropDownSelectionViewController = DropDownSelectionViewController()
         dropDownSelectionViewController.code = sender.code
         dropDownSelectionViewController.dropDownDelegate = self
-        dropDownSelectionViewController.dropDownValues = options as! [String]
-        dropDownSelectionViewController.dropDownType = type as! String
+        dropDownSelectionViewController.dropDownValues = options ?? []
+        dropDownSelectionViewController.dropDownType = type ?? ""
         dropDownSelectionViewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.navigationController?.present(dropDownSelectionViewController, animated: true, completion: nil)
     }
     
     @objc func dateClicked(sender: CustomButton) {
-        
+        selectedElement = sender.childElement
         print("dateClicked\(String(describing: sender.code))")
         let dateSeletcionViewController = DateSelectionViewController()
         dateSeletcionViewController.code = sender.code
@@ -83,11 +119,13 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
     }
     func displaySelectedDate(dateStr: String?, key: String?) {
         print("Date \(String(describing: dateStr))For Key\(String(describing: key))")
-        codeValues[key ?? ""] = dateStr
+        selectedElement.value.removeAll()
+        selectedElement.value.append(dateStr!)
         self.tableView.reloadData()
     }
     func displaySelectedDropDownValue(dropDownValue: String?, key: String?) {
-        codeValues[key ?? ""] = dropDownValue
+        selectedElement.value.removeAll()
+        selectedElement.value.append(dropDownValue!)
         self.tableView.reloadData()
     }
 }
@@ -95,22 +133,24 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
 extension ViewController : UITableViewDelegate,UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionsArray.count
+        if self.formsModel != nil {
+            return self.formsModel.sections.count//sectionsArray.count
+        }else{
+            return 0
+        }
     }
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        var isExpand = false
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            if !expandedSections.contains(section){
-                let innerDict = sectionsArray[section]
-                let childArray =  innerDict["childList"] as! [AnyObject]
-                return childArray.count
-            }
-        }else{
-            if expandedSections.contains(section){
-                let innerDict = sectionsArray[section]
-                let childArray =  innerDict["childList"] as! [AnyObject]
-                return childArray.count
+        //        var isExpand = false
+        if self.formsModel != nil {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                if !expandedSections.contains(section){
+                    return self.formsModel.sections[section].childList!.count
+                }
+            }else{
+                if expandedSections.contains(section){
+                    return self.formsModel.sections[section].childList!.count
+                }
             }
         }
         
@@ -120,10 +160,8 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         return 44
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let innerDict = sectionsArray[indexPath.section]
-        let childArray =  innerDict["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
-        let childElementType = childElement["type"] as! String
+        
+        let childElementType = self.formsModel.sections[indexPath.section].childList![indexPath.row].type
         var cellHeight = 65
         if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
             cellHeight = 44
@@ -138,11 +176,9 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let innerDict = sectionsArray[indexPath.section]
-        let childArray =  innerDict["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
-        
-        let childElementType = childElement["type"] as! String
+        let childElement = self.formsModel.sections[indexPath.section].childList![indexPath.row]
+        let childElementType = childElement.type
+
         var indexToDisplay = 0
         if childElementType.elementsEqual("group") {
             indexToDisplay = 0
@@ -168,11 +204,11 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
 
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
-        cell.titleLabel.text = childElement["name"] as? String
-        let code = childElement["code"] as! String
-        var aValue =  codeValues[code]
-        if aValue == nil {
-            aValue = ""
+        cell.titleLabel.text = childElement.name
+        let code = childElement.code
+        var aValue = ""
+        if childElement.value.count > 0  {
+            aValue = childElement.value[0]
         }
 
         if (cell.textField != nil) {
@@ -204,29 +240,25 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let innerDict = sectionsArray[indexPath.section]
-        let childArray =  innerDict["childList"] as! [AnyObject]
-        let childElement = childArray[indexPath.row]
-        let childElementType = childElement["type"] as! String
+        let childElement = self.formsModel.sections[indexPath.section].childList![indexPath.row]
+        let childElementType = childElement.type
+
         if childElementType.elementsEqual("group") {
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let detailViewController = storyBoard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-            detailViewController.detailDict = childElement as? [String : AnyObject]
-//            detailViewController.codeValues = self.codeValues
-            self.navigationController?.pushViewController(detailViewController, animated: true)//present(detailViewController, animated:true, completion:nil)
+            detailViewController.detailDict = childElement
+            self.navigationController?.pushViewController(detailViewController, animated: true)
         }
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let innerDict = sectionsArray[section]
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44)
         let footerView = UIView(frame:rect)
         footerView.backgroundColor = UIColor.init(red: 254/255.0, green: 198/255.0, blue: 70/255.0, alpha: 1.0)
-//        30 134 210 254 198 70
         let labelRect = CGRect(x: 5, y: 0, width: rect.size.width-40, height: 44)
 
         let labelToDisplay = UILabel(frame: labelRect)
         labelToDisplay.font = UIFont.systemFont(ofSize: 14)
-        labelToDisplay.text = innerDict["name"] as? String
+        labelToDisplay.text = self.formsModel.sections[section].name
         labelToDisplay.textColor = UIColor.white
         footerView.addSubview(labelToDisplay)
         
@@ -234,6 +266,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
 
         let expandButton = UIButton(frame: expandButtonRect)
         expandButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        expandButton.isUserInteractionEnabled = false
         if UIDevice.current.userInterfaceIdiom == .pad {
             if !expandedSections.contains(section) {
                 expandButton.setTitle("-", for: UIControl.State.normal)
@@ -282,11 +315,38 @@ extension ViewController: UITextFieldDelegate, UITextViewDelegate
         textField.resignFirstResponder()
         return true
     }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text.elementsEqual("\n")
         {
             textView.resignFirstResponder()
             return false
+        }
+        if let customeTextField = textView as? CustomTextView {
+            let selectedModel = customeTextField.childElement
+            var finalTxt:String = textView.text!
+            if range.length == 0 {
+                finalTxt = finalTxt + text
+            }else{
+                finalTxt = String(finalTxt.dropLast())
+            }
+            selectedModel?.value.removeAll()
+            selectedModel?.value.append(finalTxt)
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let customeTextField = textField as? CustomTextField {
+            let selectedModel = customeTextField.childElement
+            var finalTxt = textField.text!
+            if range.length == 0 {
+                finalTxt = finalTxt + string
+            }else{
+                finalTxt = String(finalTxt.dropLast())
+            }
+            selectedModel?.value.removeAll()
+            selectedModel?.value.append(finalTxt)
         }
         return true
     }
@@ -299,4 +359,28 @@ extension Array where Element: Equatable {
         remove(at: index)
     }
     
+}
+
+
+extension UIView {
+    func showToast(_ message : String, width: CGFloat) {
+        let boundFrame:CGRect = UIScreen.main.bounds
+        let toastLabel = UILabel(frame: CGRect(x: (boundFrame.size.width - width)/2, y: boundFrame.size.height-120, width: width, height: 35))
+        toastLabel.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
+        toastLabel.numberOfLines = 3
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.font = UIFont.systemFont(ofSize: 13.0)
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        UIApplication.shared.keyWindow?.addSubview(toastLabel)
+        UIView.animate(withDuration: 2.0, delay: 2.0, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
 }

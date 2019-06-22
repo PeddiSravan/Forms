@@ -9,7 +9,7 @@ import UIKit
 
 class CustomTextField: UITextField {
     var code: String?
-    var childElement: AnyObject?
+    var childElement: SectionModel?
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -21,7 +21,7 @@ class CustomTextField: UITextField {
 }
 class CustomTextView: UITextView {
     var code: String?
-    var childElement: AnyObject?
+    var childElement: SectionModel?
 
     /*
      // Only override draw() if you perform custom drawing.
@@ -34,7 +34,7 @@ class CustomTextView: UITextView {
 }
 class CustomButton: UIButton {
     var code: String?
-    var childElement: AnyObject?
+    var childElement: SectionModel?
 
     /*
      // Only override draw() if you perform custom drawing.
