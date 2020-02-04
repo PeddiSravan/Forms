@@ -12,3 +12,9 @@ class CommonStrings {
     internal static var emptyStringArray = [String]()
     
 }
+
+struct UserdefaultKeys {
+    static var shared = UserdefaultKeys()
+    var forumName = "FormNames\(username)"
+    
+}

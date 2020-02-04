@@ -13,6 +13,7 @@ class FormsMainModel:Codable {
 
 class FormsModel:Codable {
     var name:String = CommonStrings.emptyString
+    var username:String = CommonStrings.emptyString
     var sections:[SectionModel] = []
 }
 

@@ -12,16 +12,34 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var timer:Timer!
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if UserDefaults.standard.url(forKey: "ServerUrl") == nil {
+            let url = URL.init(string: "http://77.68.84.237/SymlUploader/api/hdfiles")
+            UserDefaults.standard.set(url, forKey: "ServerUrl")
+        }
+        
+        if !UserDefaults.standard.bool(forKey: "IsAdminAvailable") {
+            let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let createAccount = mainStoryboardIpad.instantiateViewController(withIdentifier: "CreateAccountViewController") as! CreateAccountViewController
+            let navigation = UINavigationController(rootViewController: createAccount)
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window?.rootViewController = navigation
+            self.window?.makeKeyAndVisible()
+        }
+        
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        if UserDefaults.standard.bool(forKey: "UserLogedIn") {
+            timer = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(sessionExpired), userInfo: nil, repeats: false)
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -35,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if timer != nil {
+            timer.invalidate()
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -42,6 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    
+    
+    @objc func sessionExpired()
+    {
+        print("sessionExpired!!!")
+        let sessionView = SessionExpiredView.instanceFromNib()
+        UIApplication.shared.keyWindow?.addSubview(sessionView)
+    }
+
 
     // MARK: - Core Data stack
 

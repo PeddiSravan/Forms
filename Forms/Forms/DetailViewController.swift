@@ -12,6 +12,8 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
     var titleLabel: UILabel = UILabel()
     var detailDict: SectionModel!
     var selectedElement:SectionModel!
+    
+    var isBMI:Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,12 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
         titleLabel.text = detailDict.name
+        
+        if detailDict.code == "bmi" {
+            self.isBMI = true
+        }
+        self.navigationItem.setHidesBackButton(false, animated:true);
+
     }
     @objc func dropDownClicked(sender: CustomButton) {
         print("dropDownClicked\(String(describing: sender.code))")
@@ -58,6 +66,16 @@ class DetailViewController: UIViewController,DateDelegate,DropDownDelegate {
         dateSeletcionViewController.dateDelegate = self
         self.navigationController?.present(dateSeletcionViewController, animated: true, completion: nil)
     }
+    
+    @objc func checkBoxClicked(sender: CustomSwitch) {
+        print("checkBoxClicked\(String(describing: sender.code))")
+        
+        sender.childElement!.value.removeAll()
+        sender.childElement!.value.append(sender.isOn ? "True" : "false")
+        self.tableView.reloadData()
+
+    }
+    
     func displaySelectedDate(dateStr: String?, key: String?) {
         selectedElement.value.removeAll()
         selectedElement.value.append(dateStr!)
@@ -81,20 +99,20 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         return detailDict.childList?.count ?? 0
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let childElement =  detailDict.childList![indexPath.row]
-        let childElementType = childElement.type
-        var cellHeight = 65
-        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
-            cellHeight = 44
-        }
-        if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
-            cellHeight = 65
-        }
-        if childElementType.elementsEqual("TextArea")  {
-            cellHeight = 120
-        }
-        return CGFloat(cellHeight)
-        
+//        let childElement =  detailDict.childList![indexPath.row]
+//        let childElementType = childElement.type
+//        var cellHeight = 65
+//        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
+//            cellHeight = 44
+//        }
+//        if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
+//            cellHeight = 65
+//        }
+//        if childElementType.elementsEqual("TextArea")  {
+//            cellHeight = 120
+//        }
+//        return CGFloat(cellHeight)
+        return UITableView.automaticDimension
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let childElement = detailDict.childList![indexPath.row]
@@ -125,6 +143,7 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
         cell.titleLabel.text = childElement.name
+        cell.titleLabel.sizeToFit()
         let code = childElement.code
         var aValue = ""
         if childElement.value.count > 0  {
@@ -153,6 +172,13 @@ extension DetailViewController : UITableViewDelegate,UITableViewDataSource
             cell.dropDownButton.code = code
             cell.dropDownButton.childElement = childElement
             cell.dropDownButton.addTarget(self, action: #selector(dropDownClicked) , for: UIControl.Event.touchUpInside);
+        }
+        if (cell.checkBox != nil)
+        {
+            cell.checkBox.isOn = aValue == "True" ? true : false
+            cell.checkBox.code = code
+            cell.checkBox.childElement = childElement
+            cell.checkBox.addTarget(self, action: #selector(checkBoxClicked) , for: UIControl.Event.touchUpInside);
         }
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
@@ -192,6 +218,9 @@ extension DetailViewController: UITextFieldDelegate, UITextViewDelegate
             selectedModel?.value.removeAll()
             selectedModel?.value.append(finalTxt)
         }
+        if isBMI {
+            self.calculateBMI()
+        }
         return true
     }
     
@@ -207,7 +236,36 @@ extension DetailViewController: UITextFieldDelegate, UITextViewDelegate
             selectedModel?.value.removeAll()
             selectedModel?.value.append(finalTxt)
         }
+        if isBMI {
+            self.calculateBMI()
+        }
+        
         return true
+    }
+    
+    func calculateBMI() {
+        var height:Float = 0
+        var weight:Float = 0
+        
+        for sectionModel in detailDict.childList! {
+            if sectionModel.code == "height" {
+                if sectionModel.value.count > 0 {
+                    height = Float(sectionModel.value[0]) ?? 0
+                }
+            }else if sectionModel.code == "weight" {
+                if sectionModel.value.count > 0 {
+                    weight = Float(sectionModel.value[0]) ?? 0
+                }
+            }
+        }
+        
+        let heightInMeters = height/100.0
+        if heightInMeters > 0 {
+            let bmiValue = weight / (heightInMeters * heightInMeters)
+            self.detailDict.value.removeAll()
+            self.detailDict.value.append("\(bmiValue)")
+        }
+        
     }
 }
 

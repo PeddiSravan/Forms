@@ -6,8 +6,8 @@
 //
 
 import UIKit
+import Alamofire
 
-//var codeValues: [String:String] = [String:String]()
 
 class ViewController: UIViewController,DateDelegate,DropDownDelegate {
 
@@ -20,7 +20,12 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
     var selectedElement:SectionModel!
     
     var formsModel:FormsModel!
-
+    
+    var storedKey:String = ""
+    @IBOutlet weak var subView: UIView!
+    @IBOutlet weak var formNameTxt: UITextField!
+    @IBOutlet weak var mainView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -39,8 +44,54 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
         titleLabel.textAlignment = NSTextAlignment.center
         titleView.addSubview(titleLabel)
         self.navigationItem.titleView = titleView
-        self.retrieveDataFromUserDefaults()
         self.addSaveBtnInNav()
+        self.subView.layer.cornerRadius = 5.0
+        self.subView.layer.borderWidth = 1.0
+        self.subView.layer.shadowRadius = 3.0
+        self.fetchJsonDataFromFile()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.navigationItem.hidesBackButton = true
+        var leftTitle = "Home"
+        if storedKey != "" {
+            leftTitle = "Patient Records"
+        }
+        let newBackButton = UIBarButtonItem(title: leftTitle, style: UIBarButtonItem.Style.plain, target: self, action: #selector(backClicked))
+        self.navigationItem.leftBarButtonItem = newBackButton
+
+    }
+    
+    @objc func backClicked() {
+        
+        let alertController = UIAlertController(title: "", message: "You Want Save The Changes.", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Yes", style: .default) { (action:UIAlertAction) in
+            self.saveDataToUserDefaults()
+        }
+        let cancelAction = UIAlertAction(title: "No", style: .default) { (action:UIAlertAction) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func keyboardWillShow(_ notification:Notification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            tableView.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        }
+    }
+    @objc func keyboardWillHide(_ notification:Notification) {
+        tableView.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        self.tableView.reloadData()
     }
     
     func addSaveBtnInNav() {
@@ -54,26 +105,106 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
     }
     
     @objc func saveDataToUserDefaults() {
-        let userDefaults = UserDefaults.standard
-        let httpBody = try? JSONEncoder().encode(formsModel)
-        userDefaults.set(httpBody, forKey: "Forms")
-        userDefaults.synchronize()
-        self.view.showToast("Deatails Saved Successfully!", width: 200)
-    }
-    func retrieveDataFromUserDefaults() {
-        let userDefaults = UserDefaults.standard
-        let decoded  = userDefaults.data(forKey: "Forms")
-        do {
-            if decoded != nil {
-                self.formsModel = try JSONDecoder().decode(FormsModel.self, from: decoded!)
-                titleLabel.text = self.formsModel.name
-                self.tableView.reloadData()
-            }else{
-                self.fetchJsonDataFromFile()
-            }
+        if storedKey == "" {
+            self.mainView.isHidden = false
+        }else{
+            saveDataIntoUserDefaults()
         }
-        catch{
-            self.fetchJsonDataFromFile()
+    }
+    @IBAction func closeBtnAct(_ sender: Any) {
+        self.mainView.isHidden = true
+    }
+    @IBAction func saveBtnAction(_ sender: Any) {
+        if self.formNameTxt.text!.count > 0  {
+            storedKey = self.formNameTxt.text!
+            saveDataIntoUserDefaults()
+            self.mainView.isHidden = true
+        }else{
+            self.view.showToast("Please Enter the Form Name", width: 250)
+        }
+    }
+    
+    func saveDataIntoUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        formsModel.username = username
+        let httpBody = try? JSONEncoder().encode(formsModel)
+        userDefaults.set(httpBody, forKey: storedKey)
+        userDefaults.synchronize()
+        self.view.showToast("Details Saved Successfully!", width: 200)
+        
+        if var historyList = UserDefaults.standard.value(forKey: UserdefaultKeys.shared.forumName) as? [String] {
+            if !historyList.contains(storedKey){
+                historyList.append(storedKey)
+            }
+            userDefaults.set(historyList, forKey: UserdefaultKeys.shared.forumName)
+            userDefaults.synchronize()
+        }else{
+            let historyList = [storedKey]
+            userDefaults.set(historyList, forKey: UserdefaultKeys.shared.forumName)
+            userDefaults.synchronize()
+        }
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func callServiceForSavingDetails(_ jsonData:Data) {
+        if let serviceUrl = UserDefaults.standard.url(forKey: "ServerUrl") {
+            var request = URLRequest(url: serviceUrl as URL)
+            request.httpMethod = "POST"
+            let boundary = "------WebKitFormBoundaryXflTCEkIPERP1zB5"
+            request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            let body = NSMutableData()
+            body.append("\r\n--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+            body.append("Content-Disposition: form-data;type=\"file\"; name=\"upload\";filename=\"\(storedKey)\"\r\n".data(using: String.Encoding.utf8)!)
+            body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: String.Encoding.utf8)!)
+            body.append(jsonData)
+            body.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+            body.appendString("Content-Disposition: form-data; name=\"inputFiles\"\r\n\r\n")
+            body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+            request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
+            request.httpBody = body as Data
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    self.dismiss(animated: false, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
+                }
+                if let error = error {
+                    print ("error: \(error)")
+                    DispatchQueue.main.async {
+                        self.view.showToast("\(error.localizedDescription)", width: 200)
+                    }
+                    return
+                }
+                guard let response = response as? HTTPURLResponse,
+                    (200...299).contains(response.statusCode) else {
+                        print ("server error")
+                        DispatchQueue.main.async {
+                            self.view.showToast("server error", width: 200)
+                        }
+                        return
+                }
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                        DispatchQueue.main.async {
+                            if let internalData = json as? NSArray, internalData.count > 0 {
+                                self.view.showToast("Deatails Uploaded to server!", width: 200)
+                            }else{
+                                self.view.showToast("Please try again", width: 200)
+                            }
+                        }
+                    }
+                    catch{
+                        DispatchQueue.main.async {
+                            self.view.showToast("Please try again", width: 200)
+                        }
+                    }
+                }
+            }
+            task.resume()
+        }else{
+            DispatchQueue.main.async {
+                self.view.showToast("Please Enter the URL in the settings", width: 300)
+            }
         }
     }
     
@@ -86,10 +217,22 @@ class ViewController: UIViewController,DateDelegate,DropDownDelegate {
                 let model: FormsMainModel = try JSONDecoder().decode(FormsMainModel.self, from: data)
                 self.formsModel = model.form
                 titleLabel.text = self.formsModel.name
+                
+                let userreview = self.formsModel.sections.last?.childList?.last
+                if userreview != nil {
+                    userreview?.childList?.first?.value.append(username)
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "MM-dd-yyyy"
+                    userreview?.childList?.last?.value.append(dateFormatter.string(from: Date()))
+                }
+                
+                
                 self.tableView.reloadData()
             }catch {
                 print(error.localizedDescription)
             }
+        }else{
+            titleLabel.text = self.formsModel.name
         }
     }
     @objc func dropDownClicked(sender: CustomButton) {
@@ -161,19 +304,19 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let childElementType = self.formsModel.sections[indexPath.section].childList![indexPath.row].type
-        var cellHeight = 65
-        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
-            cellHeight = 44
-        }
-        if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
-            cellHeight = 65
-        }
-        if childElementType.elementsEqual("TextArea") {
-            cellHeight = 120
-        }
-        return CGFloat(cellHeight)
-        
+//        let childElementType = self.formsModel.sections[indexPath.section].childList![indexPath.row].type
+//        var cellHeight = 65
+//        if childElementType.elementsEqual("group") || childElementType.elementsEqual("CheckBox") || childElementType.elementsEqual("PlainText") {
+//            cellHeight = 44
+//        }
+//        if childElementType.elementsEqual("TextBox") || childElementType.elementsEqual("DateTime") || childElementType.elementsEqual("DropDown") || childElementType.elementsEqual("MultiSelect") || childElementType.elementsEqual("SingleSelect") {
+//            cellHeight = 65
+//        }
+//        if childElementType.elementsEqual("TextArea") {
+//            cellHeight = 120
+//        }
+//        return CGFloat(cellHeight)
+        return UITableView.automaticDimension
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let childElement = self.formsModel.sections[indexPath.section].childList![indexPath.row]
@@ -205,6 +348,11 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
         cell.titleLabel.text = childElement.name
+        cell.titleLabel.sizeToFit()
+        
+        if childElement.code == "bmi" && childElement.value.count > 0 {
+            cell.titleLabel.text = "\(childElement.name)(\(childElement.value[0]))"
+        }
         let code = childElement.code
         var aValue = ""
         if childElement.value.count > 0  {
@@ -257,7 +405,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         let labelRect = CGRect(x: 5, y: 0, width: rect.size.width-40, height: 44)
 
         let labelToDisplay = UILabel(frame: labelRect)
-        labelToDisplay.font = UIFont.systemFont(ofSize: 14)
+        labelToDisplay.font = UIFont.systemFont(ofSize: 20)
         labelToDisplay.text = self.formsModel.sections[section].name
         labelToDisplay.textColor = UIColor.white
         footerView.addSubview(labelToDisplay)
@@ -382,5 +530,13 @@ extension UIView {
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })
+    }
+}
+extension NSMutableData {
+    
+    func appendString(_ string: String) {
+        
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
     }
 }

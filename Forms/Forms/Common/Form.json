@@ -1,6 +1,7 @@
 {
     "form": {
         "name": "Initial Resident Review - Assessment Form",
+        "username": "",
         "sections": [
             {
                 "name": "Residents Information",
@@ -11,7 +12,7 @@
                 ],
                 "childList": [
                     {
-                        "name": "Person Details",
+                        "name": "Personal Details",
                         "code": "personal_detail",
                         "type": "group",
                         "value": [
@@ -21,7 +22,7 @@
                             {
                                 "name": "First Name",
                                 "code": "firstName",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -29,7 +30,7 @@
                             {
                                 "name": "Last Name",
                                 "code": "lastName",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -46,7 +47,7 @@
                             {
                                 "name": "NHS ID",
                                 "code": "nshid",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -57,7 +58,8 @@
                                 "type": "SingleSelect",
                                 "options": [
                                     "Male",
-                                    "Female"
+                                    "Female",
+                                    "Not specified"
                                 ],
                                 "value": [
                                     
@@ -74,9 +76,9 @@
                         ],
                         "childList": [
                             {
-                                "name": "Flat Number",
+                                "name": "House Name/Number",
                                 "code": "flat_no",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -84,15 +86,15 @@
                             {
                                 "name": "Street",
                                 "code": "street",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
                             },
                             {
-                                "name": "Zip Code",
+                                "name": "Postcode",
                                 "code": "zip_code",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -112,7 +114,7 @@
                         ]
                     },
                     {
-                        "name": "Date of Assesment",
+                        "name": "Date of Assessment",
                         "code": "date_of_assesment",
                         "type": "DateTime",
                         "value": [
@@ -146,23 +148,23 @@
                     {
                         "name": "Current Medical Problems",
                         "code": "current_problems",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
                     },
                     {
-                        "name": "Systems Review - problems identified",
+                        "name": "Systems Review - Problems Identified",
                         "code": "systems_review_problems_identified",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
                     },
                     {
-                        "name": "Examination findings",
+                        "name": "Examination Findings",
                         "code": "examintation_findings",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
@@ -194,7 +196,7 @@
                                 ]
                             },
                             {
-                                "name": "Stick or zimmer",
+                                "name": "Stick or Zimmer",
                                 "code": "stick_or_zimmer",
                                 "type": "CheckBox",
                                 "value": [
@@ -218,14 +220,13 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "mobility_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements",
-                                    "Refer to physio"
+                                    "Gather Further Requirements",
+                                    "Refer to Physio"
                                 ],
                                 "value": [
                                     
@@ -233,25 +234,16 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             }
                         ]
                     },
                     {
-                        "name": "Falls assessment",
+                        "name": "Falls Assessment",
                         "code": "falls_assesment",
                         "type": "group",
                         "value": [
@@ -259,7 +251,7 @@
                         ],
                         "childList": [
                             {
-                                "name": "Risk assessment",
+                                "name": "Risk Assessment",
                                 "code": "Risk_assessment",
                                 "type": "PlainText",
                                 "value": [
@@ -299,14 +291,13 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "falls_assesment_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements",
-                                    "Refer to falls clinic"
+                                    "Gather Further Requirements",
+                                    "Refer To Falls Clinic"
                                 ],
                                 "value": [
                                     
@@ -314,20 +305,11 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             }
                         ]
                     },
@@ -340,7 +322,7 @@
                         ],
                         "childList": [
                             {
-                                "name": "Podiatry assessment",
+                                "name": "Podiatry Assessment",
                                 "code": "Podiatry_assessment",
                                 "type": "PlainText",
                                 "value": [
@@ -380,14 +362,13 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "Podiatry_assesment_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
-                                    "Carehome to arrange podiatruc",
+                                    "Care Home to arrange Podiatric",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -395,20 +376,11 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             }
                         ]
                     },
@@ -421,7 +393,7 @@
                         ],
                         "childList": [
                             {
-                                "name": "Oral Health assessment",
+                                "name": "Oral Health Assessment",
                                 "code": "OralHealth_assessment",
                                 "type": "PlainText",
                                 "value": [
@@ -461,14 +433,13 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "OralHealth_assesment_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
-                                    "Refer to dentist",
+                                    "Refer to Dentist",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -476,23 +447,14 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
                             },
                             {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
-                            },
-                            {
-                                "name": "Is there evidence of a care plan being delivered?",
+                                "name": "Is There Evidence Of a Care Plan Being Delivered?",
                                 "code": "evidence_delivered",
                                 "type": "PlainText",
                                 "value": [
@@ -518,7 +480,7 @@
                         ]
                     },
                     {
-                        "name": "Pressure area review",
+                        "name": "Pressure Area Review",
                         "code": "Pressurearea_review",
                         "type": "group",
                         "value": [
@@ -542,13 +504,12 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "Pressurearea_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -556,20 +517,11 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             }
                         ]
                     },
@@ -614,13 +566,12 @@
                                 ]
                             },
                             {
-                                "name": "",
+                                "name": "Other problem (specify)",
                                 "code": "diet_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -628,33 +579,8 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
-                                "value": [
-                                    
-                                ]
-                            },
-                            {
-                                "name": "",
                                 "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
-                            },
-                            {
-                                "name": "Yes",
-                                "code": "yes1",
-                                "type": "CheckBox",
-                                "value": [
-                                    
-                                ]
-                            },
-                            {
-                                "name": "No",
-                                "code": "No1",
-                                "type": "CheckBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -678,7 +604,7 @@
                                 ]
                             },
                             {
-                                "name": "Hearing aid",
+                                "name": "Hearing Aid",
                                 "code": "Hearing_aid",
                                 "type": "CheckBox",
                                 "value": [
@@ -687,20 +613,11 @@
                             },
                             {
                                 "name": "Other problem (specify)",
-                                "code": "other_problem",
-                                "type": "CheckBox",
-                                "value": [
-                                    
-                                ]
-                            },
-                            {
-                                "name": "",
                                 "code": "hearing_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -708,20 +625,11 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             }
                         ]
                     },
@@ -751,20 +659,11 @@
                             },
                             {
                                 "name": "Other problem (specify)",
-                                "code": "other_problem",
-                                "type": "CheckBox",
-                                "value": [
-                                    
-                                ]
-                            },
-                            {
-                                "name": "",
                                 "code": "eyesight_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
-                                    "Arrange optician apponitment for checkup",
-                                    "Gather Further Requriements"
+                                    "Arrange Optician Appointment For Checkup",
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -772,23 +671,14 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
                             },
                             {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
-                            },
-                            {
-                                "name": "Is there evidence of a care plan being delivered?",
+                                "name": "Is There Evidence Of a Care Plan Being Delivered?",
                                 "code": "evidence_delivered",
                                 "type": "PlainText",
                                 "value": [
@@ -814,15 +704,15 @@
                         ]
                     },
                     {
-                        "name": "Osteoperosis Risk Assessment (Using local agreed clinical pathway and please note most in this age group won't need a dexa):",
-                        "code": "osteoperosis_risk",
+                        "name": "Osteoporosis Risk Assessment (Using local agreed clinical pathway and please note most in this age group won't need a dexa):",
+                        "code": "Osteoporosis_risk",
                         "type": "group",
                         "value": [
                             
                         ],
                         "childList": [
                             {
-                                "name": "HX of recent falls",
+                                "name": "Hx of recent falls",
                                 "code": "hx_recentfalls",
                                 "type": "PlainText",
                                 "value": [
@@ -846,14 +736,13 @@
                                 ]
                             },
                             {
-                                "name": "",
-                                "code": "osteoperosis_options",
+                                "name": "Other problem (specify)",
+                                "code": "Osteoporosis_options",
                                 "type": "DropDown",
                                 "options": [
-                                    "Action Required",
-                                    "Refer to osteoperosis clinic",
+                                    "Refer To Osteoporosis Clinic",
                                     "Complete Relevant Forms",
-                                    "Gather Further Requriements"
+                                    "Gather Further Requirements"
                                 ],
                                 "value": [
                                     
@@ -861,20 +750,11 @@
                             },
                             {
                                 "name": "Other",
-                                "code": "other",
-                                "type": "CheckBox",
+                                "code": "otherTextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
-                            },
-                            {
-                                "name": "",
-                                "code": "otherTextBox",
-                                "type": "TextBox",
-                                "value": [
-                                    
-                                ],
-                                "hidden": "{other}!='YES'"
                             },
                             {
                                 "name": "On Calcium and Vitamin D supplements?",
@@ -929,7 +809,7 @@
                     {
                         "name": "Oxygen Saturation",
                         "code": "oxygen_saturation",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
@@ -937,15 +817,15 @@
                     {
                         "name": "Chest Examination",
                         "code": "chest_examination",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
                     },
                     {
-                        "name": "Abdominal Exam",
+                        "name": "Abdominal Examination",
                         "code": "abdominal_exam",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
@@ -953,7 +833,7 @@
                     {
                         "name": "Neurology",
                         "code": "neurology",
-                        "type": "TextBox",
+                        "type": "TextArea",
                         "value": [
                             
                         ]
@@ -969,7 +849,7 @@
                             {
                                 "name": "Systolic",
                                 "code": "systolic",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -977,7 +857,7 @@
                             {
                                 "name": "Diastolic",
                                 "code": "diastolic",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -1001,17 +881,17 @@
                         ],
                         "childList": [
                             {
-                                "name": "Height",
+                                "name": "Height(cms)",
                                 "code": "height",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
                             },
                             {
-                                "name": "Weight",
+                                "name": "Weight(kgs)",
                                 "code": "weight",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -1027,7 +907,7 @@
                         ]
                     },
                     {
-                        "name": "Investigations recommended by assessor",
+                        "name": "Investigations Recommended By Assessor",
                         "code": "investigatons_recommended",
                         "type": "TextArea",
                         "value": [
@@ -1039,10 +919,10 @@
                         "code": "medication_review",
                         "type": "DropDown",
                         "options": [
-                            "A Eldery over 75 annual consultation",
-                            "B New Patient screend done",
-                            "C Annual health review",
-                            "D Initial post discharge review"
+                            "A Eldery Over 75 Annual Consultation",
+                            "B New Patient Screening Done",
+                            "C Annual Health Review",
+                            "D Initial Post Discharge Review"
                         ],
                         "value": [
                             
@@ -1067,7 +947,7 @@
                             {
                                 "name": "",
                                 "code": "proformacompleted_TextBox",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -1075,7 +955,7 @@
                         ]
                     },
                     {
-                        "name": "Medication Review with patient",
+                        "name": "Medication Review with Patient",
                         "code": "medication_review",
                         "type": "group",
                         "value": [
@@ -1083,7 +963,7 @@
                         ],
                         "childList": [
                             {
-                                "name": "Medication Review with patient",
+                                "name": "Medication Review With Patient",
                                 "code": "medication1_review",
                                 "type": "CheckBox",
                                 "value": [
@@ -1093,7 +973,7 @@
                             {
                                 "name": "",
                                 "code": "medicationreview_textbox",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]
@@ -1101,7 +981,7 @@
                         ]
                     },
                     {
-                        "name": "Medication Review with patient - follow up",
+                        "name": "Medication Review With Patient - Follow Up",
                         "code": "medicationreview_patient",
                         "type": "group",
                         "value": [
@@ -1109,7 +989,7 @@
                         ],
                         "childList": [
                             {
-                                "name": "Medication Review with patient - follow up",
+                                "name": "Medication Review With Patient - Follow Up",
                                 "code": "medicationreview1_patient",
                                 "type": "CheckBox",
                                 "value": [
@@ -1153,7 +1033,7 @@
                             {
                                 "name": "Name of person completing the review",
                                 "code": "person_review",
-                                "type": "TextBox",
+                                "type": "TextArea",
                                 "value": [
                                     
                                 ]

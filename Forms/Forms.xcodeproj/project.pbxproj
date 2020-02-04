@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,6 +24,18 @@
 		00CF267122B68789005A0FC0 /* Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CF267022B68789005A0FC0 /* Form.swift */; };
 		00CF267322B688F6005A0FC0 /* CommonStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CF267222B688F6005A0FC0 /* CommonStrings.swift */; };
 		00CF267522B6D727005A0FC0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CF267422B6D727005A0FC0 /* DetailViewController.swift */; };
+		4B08528F23AE411F00CD7CF8 /* SessionExpiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B08528E23AE411F00CD7CF8 /* SessionExpiredView.swift */; };
+		4B08529123AE413000CD7CF8 /* SessionExpiredView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B08529023AE413000CD7CF8 /* SessionExpiredView.xib */; };
+		4B1D64F8239C459D00772AA1 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1D64F7239C459D00772AA1 /* HistoryCell.swift */; };
+		4B896EA522CB704F00E46B86 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B896EA422CB704F00E46B86 /* HomeViewController.swift */; };
+		4B896EA822CB72C900E46B86 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B896EA722CB72C900E46B86 /* SettingsViewController.swift */; };
+		4B896EAB22CB7C4D00E46B86 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B896EAA22CB7C4D00E46B86 /* HistoryViewController.swift */; };
+		4BAC1D5923C8831600D46B01 /* AlloyPopUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC1D5723C8831600D46B01 /* AlloyPopUpController.swift */; };
+		4BAC1D5A23C8831600D46B01 /* AlloyPopUpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BAC1D5823C8831600D46B01 /* AlloyPopUpController.xib */; };
+		4BB8BB77239CF0290082375A /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB8BB76239CF0290082375A /* CreateAccountViewController.swift */; };
+		4BBCACD7239D175E0059EA2B /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCACD6239D175E0059EA2B /* UserModel.swift */; };
+		4BEB4553239BCDD6009E745E /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB4552239BCDD6009E745E /* SignInViewController.swift */; };
+		EA03DC6398CF4668705132BC /* Pods_Forms.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BDF59031247E885558B8187 /* Pods_Forms.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +58,20 @@
 		00CF267022B68789005A0FC0 /* Form.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
 		00CF267222B688F6005A0FC0 /* CommonStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStrings.swift; sourceTree = "<group>"; };
 		00CF267422B6D727005A0FC0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		2B349F80AA18BF09FB7AE824 /* Pods-Forms.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Forms.release.xcconfig"; path = "Target Support Files/Pods-Forms/Pods-Forms.release.xcconfig"; sourceTree = "<group>"; };
+		4B08528E23AE411F00CD7CF8 /* SessionExpiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExpiredView.swift; sourceTree = "<group>"; };
+		4B08529023AE413000CD7CF8 /* SessionExpiredView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SessionExpiredView.xib; sourceTree = "<group>"; };
+		4B1D64F7239C459D00772AA1 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
+		4B896EA422CB704F00E46B86 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		4B896EA722CB72C900E46B86 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		4B896EAA22CB7C4D00E46B86 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		4BAC1D5723C8831600D46B01 /* AlloyPopUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlloyPopUpController.swift; sourceTree = "<group>"; };
+		4BAC1D5823C8831600D46B01 /* AlloyPopUpController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlloyPopUpController.xib; sourceTree = "<group>"; };
+		4BB8BB76239CF0290082375A /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		4BBCACD6239D175E0059EA2B /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		4BEB4552239BCDD6009E745E /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		7BDF59031247E885558B8187 /* Pods_Forms.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Forms.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C14BF4BB4118A86DCAB82623 /* Pods-Forms.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Forms.debug.xcconfig"; path = "Target Support Files/Pods-Forms/Pods-Forms.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA03DC6398CF4668705132BC /* Pods_Forms.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +102,8 @@
 			children = (
 				009FA22122B021A900B3C662 /* Forms */,
 				009FA22022B021A900B3C662 /* Products */,
+				3AA503AAAECF7201A56558A6 /* Pods */,
+				A5601275E119BC2A7DACEF0B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,10 +118,16 @@
 		009FA22122B021A900B3C662 /* Forms */ = {
 			isa = PBXGroup;
 			children = (
+				4BAC1D5623C8831600D46B01 /* AlloyPopUpController */,
+				4BB8BB73239CEFA80082375A /* CreateAccountViewController */,
+				4BEB4551239BCD9E009E745E /* SignInViewController */,
 				00CF266D22B684D9005A0FC0 /* Common */,
 				009FA23822B0226600B3C662 /* Views */,
 				009FA23722B0224E00B3C662 /* Models */,
 				00601B6C22B95A76000183F0 /* ViewControllers */,
+				4B896EA322CB703800E46B86 /* HomeViewController */,
+				4B896EA622CB72AF00E46B86 /* SettingsViewController */,
+				4B896EA922CB7C3A00E46B86 /* HistoryViewController */,
 				009FA22222B021A900B3C662 /* AppDelegate.swift */,
 				009FA22422B021A900B3C662 /* ViewController.swift */,
 				00CF267422B6D727005A0FC0 /* DetailViewController.swift */,
@@ -109,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				00CF267022B68789005A0FC0 /* Form.swift */,
+				4BBCACD6239D175E0059EA2B /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -119,6 +155,9 @@
 				009FA23922B0229E00B3C662 /* FormCell.swift */,
 				009FA23A22B0229E00B3C662 /* FormCell.xib */,
 				00601B7122B960EA000183F0 /* CustomTextField.swift */,
+				4B1D64F7239C459D00772AA1 /* HistoryCell.swift */,
+				4B08528E23AE411F00CD7CF8 /* SessionExpiredView.swift */,
+				4B08529023AE413000CD7CF8 /* SessionExpiredView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -132,6 +171,72 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		3AA503AAAECF7201A56558A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C14BF4BB4118A86DCAB82623 /* Pods-Forms.debug.xcconfig */,
+				2B349F80AA18BF09FB7AE824 /* Pods-Forms.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		4B896EA322CB703800E46B86 /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4B896EA422CB704F00E46B86 /* HomeViewController.swift */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
+		4B896EA622CB72AF00E46B86 /* SettingsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4B896EA722CB72C900E46B86 /* SettingsViewController.swift */,
+			);
+			path = SettingsViewController;
+			sourceTree = "<group>";
+		};
+		4B896EA922CB7C3A00E46B86 /* HistoryViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4B896EAA22CB7C4D00E46B86 /* HistoryViewController.swift */,
+			);
+			path = HistoryViewController;
+			sourceTree = "<group>";
+		};
+		4BAC1D5623C8831600D46B01 /* AlloyPopUpController */ = {
+			isa = PBXGroup;
+			children = (
+				4BAC1D5723C8831600D46B01 /* AlloyPopUpController.swift */,
+				4BAC1D5823C8831600D46B01 /* AlloyPopUpController.xib */,
+			);
+			path = AlloyPopUpController;
+			sourceTree = "<group>";
+		};
+		4BB8BB73239CEFA80082375A /* CreateAccountViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4BB8BB76239CF0290082375A /* CreateAccountViewController.swift */,
+			);
+			path = CreateAccountViewController;
+			sourceTree = "<group>";
+		};
+		4BEB4551239BCD9E009E745E /* SignInViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4BEB4552239BCDD6009E745E /* SignInViewController.swift */,
+			);
+			path = SignInViewController;
+			sourceTree = "<group>";
+		};
+		A5601275E119BC2A7DACEF0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7BDF59031247E885558B8187 /* Pods_Forms.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,9 +244,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 009FA23422B021AD00B3C662 /* Build configuration list for PBXNativeTarget "Forms" */;
 			buildPhases = (
+				B5BFA4B4CE6ED23364DE93DE /* [CP] Check Pods Manifest.lock */,
 				009FA21B22B021A900B3C662 /* Sources */,
 				009FA21C22B021A900B3C662 /* Frameworks */,
 				009FA21D22B021A900B3C662 /* Resources */,
+				AB317FBD58EF1782E7BBC241 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,28 +301,81 @@
 				009FA22D22B021AC00B3C662 /* Assets.xcassets in Resources */,
 				00601B7022B95AD2000183F0 /* DateSelectionViewController.xib in Resources */,
 				009FA22822B021A900B3C662 /* Main.storyboard in Resources */,
+				4BAC1D5A23C8831600D46B01 /* AlloyPopUpController.xib in Resources */,
 				003E2D6C22BBFF820016AAE3 /* DropDownSelectionViewController.xib in Resources */,
 				00CF266F22B68591005A0FC0 /* Form.json in Resources */,
+				4B08529123AE413000CD7CF8 /* SessionExpiredView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AB317FBD58EF1782E7BBC241 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Forms/Pods-Forms-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Forms/Pods-Forms-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Forms/Pods-Forms-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5BFA4B4CE6ED23364DE93DE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Forms-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		009FA21B22B021A900B3C662 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BEB4553239BCDD6009E745E /* SignInViewController.swift in Sources */,
 				003E2D6B22BBFF820016AAE3 /* DropDownSelectionViewController.swift in Sources */,
 				00CF267122B68789005A0FC0 /* Form.swift in Sources */,
 				009FA22522B021A900B3C662 /* ViewController.swift in Sources */,
+				4BB8BB77239CF0290082375A /* CreateAccountViewController.swift in Sources */,
 				009FA23B22B0229E00B3C662 /* FormCell.swift in Sources */,
+				4B896EAB22CB7C4D00E46B86 /* HistoryViewController.swift in Sources */,
 				009FA22B22B021A900B3C662 /* Forms.xcdatamodeld in Sources */,
+				4BBCACD7239D175E0059EA2B /* UserModel.swift in Sources */,
 				009FA22322B021A900B3C662 /* AppDelegate.swift in Sources */,
 				00601B6F22B95AD2000183F0 /* DateSelectionViewController.swift in Sources */,
+				4B1D64F8239C459D00772AA1 /* HistoryCell.swift in Sources */,
+				4B896EA522CB704F00E46B86 /* HomeViewController.swift in Sources */,
 				00CF267322B688F6005A0FC0 /* CommonStrings.swift in Sources */,
+				4BAC1D5923C8831600D46B01 /* AlloyPopUpController.swift in Sources */,
 				00CF267522B6D727005A0FC0 /* DetailViewController.swift in Sources */,
+				4B08528F23AE411F00CD7CF8 /* SessionExpiredView.swift in Sources */,
 				00601B7222B960EA000183F0 /* CustomTextField.swift in Sources */,
+				4B896EA822CB72C900E46B86 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,11 +519,12 @@
 		};
 		009FA23522B021AD00B3C662 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C14BF4BB4118A86DCAB82623 /* Pods-Forms.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5568U5YB6T;
+				DEVELOPMENT_TEAM = L3SBV7HM56;
 				INFOPLIST_FILE = Forms/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -380,11 +541,12 @@
 		};
 		009FA23622B021AD00B3C662 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B349F80AA18BF09FB7AE824 /* Pods-Forms.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5568U5YB6T;
+				DEVELOPMENT_TEAM = L3SBV7HM56;
 				INFOPLIST_FILE = Forms/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (
