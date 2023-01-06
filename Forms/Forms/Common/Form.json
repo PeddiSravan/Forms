@@ -102,6 +102,13 @@
                         ]
                     },
                     {
+                        "name": "Instruction to Candidates for filling the application for Registration",
+                        "Footer": "A Medical Record Form is a piece of paper or card on which a formal arrangement",
+                        "code": "hospitalImage",
+                        "type": "Image",
+                        "value": ["dynaforms"]
+                    },
+                    {
                         "name": "Lead GP or Cluster Lead",
                         "code": "cluster_lead",
                         "type": "DropDown",

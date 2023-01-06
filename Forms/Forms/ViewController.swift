@@ -344,7 +344,9 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
         if childElementType.elementsEqual("PlainText") {
             indexToDisplay = 6
         }
-
+        if childElementType.elementsEqual("Image") {
+            indexToDisplay = 7
+        }
         let cells = Bundle.main.loadNibNamed("FormCell", owner: self, options:nil)
         let cell = cells?[indexToDisplay] as! FormCell
         cell.titleLabel.text = childElement.name
@@ -382,6 +384,13 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource
             cell.dropDownButton.code = code
             cell.dropDownButton.childElement = childElement
             cell.dropDownButton.addTarget(self, action: #selector(dropDownClicked) , for: UIControl.Event.touchUpInside);
+        }
+        if cell.displayImage != nil {
+            cell.displayImage.image = UIImage(named: aValue)
+        }
+        if cell.imageFooter != nil {
+            cell.imageFooter.text = childElement.Footer
+            cell.imageFooter.sizeToFit()
         }
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell

@@ -15,7 +15,9 @@ class FormCell: UITableViewCell {
     @IBOutlet var dateButton : CustomButton!
     @IBOutlet var dropDownButton : CustomButton!
     @IBOutlet var checkBox: CustomSwitch!
-    
+    @IBOutlet var displayImage: UIImageView!
+    @IBOutlet var imageFooter : UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

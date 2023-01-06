@@ -23,6 +23,7 @@ class SectionModel:Codable {
     var type = CommonStrings.emptyString
     var value:[String] = []
     var options:[String]?
+    var Footer:String?
     var childList:[SectionModel]?
 }
 
